@@ -30,7 +30,7 @@
   "scripts": {
     "build": "unbuild",
     "start": "npm run start:dev",
-    "start:dev": "esno watch src/index.ts",
+    "start:dev": "esno watch src/dev.ts",
     "start:prod": "pnpm install && pnpm build && node dist/index.mjs",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "winston": "^3.13.0",
     "winston-daily-rotate-file": "^5.0.0"
