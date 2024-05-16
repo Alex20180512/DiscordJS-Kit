@@ -20,8 +20,22 @@ const bot = new Bot({
   messageStacks: [
     {
       channelID: process.env.CHANNEL_ID!,
-      content: "Hello, World!",
+      content: () => "Hello, World! " + new Date().toLocaleTimeString(),
       cron: "*/10 * * * * *",
+    },
+    {
+      channelID: process.env.CHANNEL_ID!,
+      content: () => "Hello, World! (from a function) " + new Date().toLocaleTimeString(),
+      cron: "*/15 * * * * *",
+    },
+    {
+      channelID: process.env.CHANNEL_ID!,
+      content: async () => {
+        return new Promise<string>((resolve) => {
+          resolve("Hello, World! (from a promise) " + new Date().toLocaleTimeString());
+        });
+      },
+      cron: "*/20 * * * * *",
     },
   ],
 });

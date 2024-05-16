@@ -162,11 +162,29 @@ export class Bot extends MetaConfig {
       }
 
       cron.schedule(messageStack.cron, () => {
-        channel.send(messageStack.content).catch(() => {
-          this.loggerError(
-            `Failed to send message to channel ID: ${messageStack.channelID} for ${messageStack.content}`
-          );
-        });
+        (async () => {
+          try {
+            if (typeof messageStack.content === "string") {
+              await channel.send(messageStack.content);
+            } else if (
+              typeof messageStack.content === "function" &&
+              messageStack.content.constructor.name === "AsyncFunction"
+            ) {
+              await channel.send(await messageStack.content());
+            } else if (typeof messageStack.content === "function") {
+              await channel.send((messageStack.content as Function)());
+            } else {
+              this.loggerError(
+                `Invalid messageStack content type for channel ID: ${messageStack.channelID} for ${messageStack.content}`
+              );
+            }
+          } catch (error) {
+            this.loggerError(error);
+            this.loggerError(
+              `Failed to send message to channel ID: ${messageStack.channelID} for ${messageStack.content}`
+            );
+          }
+        })();
       });
     }
   }
