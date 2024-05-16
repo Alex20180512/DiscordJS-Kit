@@ -1,21 +1,14 @@
-import {
-  Client,
-  Events,
-  GatewayIntentBits,
-  Partials,
-  PermissionFlagsBits,
-  PermissionsBitField,
-  REST,
-  Routes,
-  SlashCommandBuilder,
-  TextChannel,
-} from "discord.js";
+import type DiscordJSType from "discord.js";
+import DiscordJSAPI from "discord.js";
 import cron from "node-cron";
 import { BotProps, MetaConfig } from "./meta";
 
+const { Client, Events, GatewayIntentBits, Partials, PermissionFlagsBits, REST, Routes, SlashCommandBuilder } =
+  DiscordJSAPI;
+
 export class Bot extends MetaConfig {
-  public client: Client;
-  public rest: REST;
+  public client: DiscordJSType.Client;
+  public rest: DiscordJSType.REST;
   constructor(props: BotProps) {
     super(props);
 
@@ -30,7 +23,7 @@ export class Bot extends MetaConfig {
 
     this.client.on(Events.InteractionCreate, async (interaction) => {
       if (interaction.isCommand()) {
-        const memberPermissions = interaction.member!.permissions as Readonly<PermissionsBitField>;
+        const memberPermissions = interaction.member!.permissions as Readonly<DiscordJSType.PermissionsBitField>;
         const isAdmin = memberPermissions.has(PermissionFlagsBits.Administrator);
         const command = this.getSlashCommandExecuteAction(interaction.commandName);
 
@@ -154,7 +147,7 @@ export class Bot extends MetaConfig {
     }
 
     for (const messageStack of this.messageStacks) {
-      const channel = this.client.channels.cache.get(messageStack.channelID) as TextChannel;
+      const channel = this.client.channels.cache.get(messageStack.channelID) as DiscordJSType.TextChannel;
 
       if (!channel) {
         this.loggerWarning(`Channel ID: ${messageStack.channelID} not found for ${messageStack.content}.`);
@@ -189,3 +182,7 @@ export class Bot extends MetaConfig {
     }
   }
 }
+
+export { DiscordJSAPI };
+
+export type { DiscordJSType };
