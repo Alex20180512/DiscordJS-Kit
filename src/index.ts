@@ -1,4 +1,4 @@
-import "./polyfill";
+import { polyfill } from "./polyfill";
 import type DiscordJSType from "discord.js";
 import DiscordJSAPI from "discord.js";
 import cron from "node-cron";
@@ -8,6 +8,8 @@ const { Client, Events, GatewayIntentBits, Partials, PermissionFlagsBits, REST, 
   DiscordJSAPI;
 
 export class Bot extends MetaConfig {
+  // TODO: Remove this bad practice for nodejs 16.
+  private mark = polyfill();
   public client: DiscordJSType.Client;
   public rest: DiscordJSType.REST;
   constructor(props: BotProps) {
