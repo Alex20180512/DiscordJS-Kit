@@ -1,7 +1,7 @@
 {
   "name": "discordjs-kit",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "packageManager": "pnpm@9.1.0",
   "description": "_description_",
   "keywords": [],
@@ -55,6 +55,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "node-cron": "^3.0.3",
+    "web-streams-polyfill": "^4.0.0",
     "winston": "^3.13.0",
     "winston-daily-rotate-file": "^5.0.0"
   }

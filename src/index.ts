@@ -1,3 +1,4 @@
+import "./polyfill";
 import type DiscordJSType from "discord.js";
 import DiscordJSAPI from "discord.js";
 import cron from "node-cron";
