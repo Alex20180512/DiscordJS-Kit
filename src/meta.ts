@@ -9,6 +9,12 @@ export type SlashCommand = {
   execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<void>;
 };
 
+export type MessageStack = {
+  channelID: string;
+  content: string;
+  cron: string;
+};
+
 export interface BotProps {
   meta: {
     appName: string;
@@ -16,6 +22,7 @@ export interface BotProps {
     clientID: string;
     guildsID: string[];
   };
+  messageStacks?: MessageStack[];
   slashCommands?: SlashCommand[];
 }
 
@@ -36,6 +43,9 @@ export class MetaConfig extends Logger {
   }
   public get slashCommands() {
     return this.props.slashCommands;
+  }
+  public get messageStacks() {
+    return this.props.messageStacks;
   }
   public getSlashCommandExecuteAction(name: string) {
     if (!this.slashCommands) {

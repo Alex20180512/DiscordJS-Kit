@@ -17,6 +17,13 @@ const bot = new Bot({
       },
     },
   ],
+  messageStacks: [
+    {
+      channelID: process.env.CHANNEL_ID!,
+      content: "Hello, World!",
+      cron: "*/10 * * * * *",
+    },
+  ],
 });
 
 bot.start();

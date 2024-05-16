@@ -8,7 +8,9 @@ import {
   REST,
   Routes,
   SlashCommandBuilder,
+  TextChannel,
 } from "discord.js";
+import cron from "node-cron";
 import { BotProps, MetaConfig } from "./meta";
 
 export class Bot extends MetaConfig {
@@ -72,13 +74,14 @@ export class Bot extends MetaConfig {
 
     this.client.once(Events.ClientReady, (readyClient) => {
       this.registerSlashCommands();
+      this.registerMessageStacks();
       this.loggerInfo(`Ready! Logged in as ${readyClient.user.tag}`);
     });
   }
   public async start() {
     return this.client.login(this.token);
   }
-  public async registerSlashCommand(guildId: string, guildName: string) {
+  private async registerSlashCommand(guildId: string, guildName: string) {
     if (!this.slashCommands) {
       return;
     }
@@ -118,7 +121,7 @@ export class Bot extends MetaConfig {
       this.loggerError("Failed to register slash commands for guild ID: " + guildId);
     }
   }
-  public async registerSlashCommands() {
+  private async registerSlashCommands() {
     if (!this.client.guilds.cache.size) {
       return;
     }
@@ -143,6 +146,28 @@ export class Bot extends MetaConfig {
       } catch (error) {
         this.loggerError(`Failed to register slash commands for guild ID: ${guildId} ${error}`);
       }
+    }
+  }
+  private registerMessageStacks() {
+    if (!this.messageStacks) {
+      return;
+    }
+
+    for (const messageStack of this.messageStacks) {
+      const channel = this.client.channels.cache.get(messageStack.channelID) as TextChannel;
+
+      if (!channel) {
+        this.loggerWarning(`Channel ID: ${messageStack.channelID} not found for ${messageStack.content}.`);
+        continue;
+      }
+
+      cron.schedule(messageStack.cron, () => {
+        channel.send(messageStack.content).catch(() => {
+          this.loggerError(
+            `Failed to send message to channel ID: ${messageStack.channelID} for ${messageStack.content}`
+          );
+        });
+      });
     }
   }
 }
