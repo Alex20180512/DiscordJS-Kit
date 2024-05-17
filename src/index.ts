@@ -3,6 +3,7 @@ import type DiscordJSType from "discord.js";
 import DiscordJSAPI from "discord.js";
 import cron from "node-cron";
 import { BotProps, MetaConfig } from "./meta";
+import { printTable } from "console-table-printer";
 
 const { Client, Events, GatewayIntentBits, Partials, PermissionFlagsBits, REST, Routes, SlashCommandBuilder } =
   DiscordJSAPI;
@@ -112,6 +113,7 @@ export class Bot extends MetaConfig {
     try {
       await this.rest.put(Routes.applicationGuildCommands(this.clientId, guildId), { body: commands });
       this.loggerInfo(`Slash ${commands.length} commands registered for guild ID: ${guildId} (${guildName})`);
+      printTable(commands.map((item) => ({ name: item.name, description: item.description })));
     } catch (error) {
       this.loggerError("Failed to register slash commands for guild ID: " + guildId);
     }
