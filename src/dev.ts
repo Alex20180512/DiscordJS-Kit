@@ -17,6 +17,14 @@ const bot = new Bot({
         await interaction.reply("Pong!");
       },
     },
+    {
+      name: "ping1",
+      description: "Replies with Pong!Replies with Pong!Replies with Pong!",
+      admin: true,
+      async execute(interaction) {
+        await interaction.reply("Pong!");
+      },
+    },
   ],
   messageStacks: [
     {
