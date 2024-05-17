@@ -12,6 +12,7 @@ const bot = new Bot({
     {
       name: "ping",
       description: "Replies with Pong!",
+      admin: true,
       async execute(interaction) {
         await interaction.reply("Pong!");
       },
@@ -21,12 +22,12 @@ const bot = new Bot({
     {
       channelID: process.env.CHANNEL_ID!,
       content: () => "Hello, World! " + new Date().toLocaleTimeString(),
-      cron: "*/10 * * * * *",
+      cron: "*/60 * * * * *",
     },
     {
       channelID: process.env.CHANNEL_ID!,
       content: () => "Hello, World! (from a function) " + new Date().toLocaleTimeString(),
-      cron: "*/15 * * * * *",
+      cron: "*/65 * * * * *",
     },
     {
       channelID: process.env.CHANNEL_ID!,
@@ -35,7 +36,7 @@ const bot = new Bot({
           resolve("Hello, World! (from a promise) " + new Date().toLocaleTimeString());
         });
       },
-      cron: "*/20 * * * * *",
+      cron: "*/75 * * * * *",
     },
   ],
 });

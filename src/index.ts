@@ -26,6 +26,7 @@ export class Bot extends MetaConfig {
       if (interaction.isCommand()) {
         const memberPermissions = interaction.member!.permissions as Readonly<DiscordJSType.PermissionsBitField>;
         const isAdmin = memberPermissions.has(PermissionFlagsBits.Administrator);
+        console.log("isAdmin", isAdmin);
         const command = this.getSlashCommandExecuteAction(interaction.commandName);
 
         if (!command) {
@@ -81,7 +82,8 @@ export class Bot extends MetaConfig {
     }
 
     const commands = this.slashCommands.map((command) => {
-      const slashCMD = new SlashCommandBuilder().setName(command.name).setDescription(command.description);
+      const description = command.admin ? `[Only for administrators] ${command.description}` : command.description;
+      const slashCMD = new SlashCommandBuilder().setName(command.name).setDescription(description);
 
       if (command.args) {
         command.args.forEach((arg) => {
