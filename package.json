@@ -1,7 +1,7 @@
 {
   "name": "discordjs-kit",
   "type": "module",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "packageManager": "pnpm@9.1.0",
   "description": "_description_",
   "keywords": [],
@@ -32,8 +32,9 @@
     "start": "npm run start:dev",
     "start:dev": "esno watch src/dev.ts",
     "start:prod": "node dist/index.mjs",
-    "test": "vitest",
-    "typecheck": "tsc --noEmit"
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit",
+    "prepublish": "npm run build && npm run test"
   },
   "devDependencies": {
     "@antfu/ni": "^0.21.12",
