@@ -26,7 +26,6 @@ export class Bot extends MetaConfig {
       if (interaction.isCommand()) {
         const memberPermissions = interaction.member!.permissions as Readonly<DiscordJSType.PermissionsBitField>;
         const isAdmin = memberPermissions.has(PermissionFlagsBits.Administrator);
-        console.log("isAdmin", isAdmin);
         const command = this.getSlashCommandExecuteAction(interaction.commandName);
 
         if (!command) {
