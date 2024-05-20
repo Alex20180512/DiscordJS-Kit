@@ -47,6 +47,12 @@ const bot = new Bot({
   messageStacks: [
     {
       channelID: process.env.CHANNEL_ID!,
+      // Return an empty string if you don't want to send anything
+      content: "",
+      cron: "*/10 * * * * *",
+    },
+    {
+      channelID: process.env.CHANNEL_ID!,
       content: "Hello, World! " + new Date().toLocaleTimeString(),
       cron: "*/10 * * * * *",
     },
