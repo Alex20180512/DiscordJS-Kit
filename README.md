@@ -2,6 +2,10 @@
 
 A declarative Bot script development tool.
 
+## Warn
+
+The bot's permission processing is not refined, and functions are provided under Admin permissions. Please use this tool with caution if you need subdivision permissions.
+
 ## Install
 
 ```shell
