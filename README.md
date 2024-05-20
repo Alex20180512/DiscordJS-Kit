@@ -6,6 +6,16 @@ A declarative Bot script development tool.
 
 The bot's permission processing is not refined, and functions are provided under Admin permissions. Please use this tool with caution if you need subdivision permissions.
 
+## Requirements
+
+This tool requires Node.js version 16.20.2 or higher.
+
+## Feature
+
+- Logger
+- Slash Command
+- Message Stack
+
 ## Install
 
 ```shell
@@ -59,13 +69,3 @@ const bot = new Bot({
 
 bot.start();
 ```
-
-## Requirements
-
-This tool requires Node.js version 16.20.2 or higher.
-
-## Feature
-
-- Logger
-- Slash Command
-- Message Stack
