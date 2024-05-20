@@ -170,14 +170,16 @@ export class Bot extends MetaConfig {
         (async () => {
           try {
             if (typeof messageStack.content === "string") {
-              await channel.send(messageStack.content);
+              Boolean(messageStack.content) && (await channel.send(messageStack.content));
             } else if (
               typeof messageStack.content === "function" &&
               messageStack.content.constructor.name === "AsyncFunction"
             ) {
-              await channel.send(await messageStack.content());
+              const content = await messageStack.content();
+              Boolean(content) && (await channel.send(content));
             } else if (typeof messageStack.content === "function") {
-              await channel.send((messageStack.content as Function)());
+              const content = (messageStack.content as Function)();
+              Boolean(content) && (await channel.send(content));
             } else {
               this.loggerError(
                 `Invalid messageStack content type for channel ID: ${messageStack.channelID} for ${messageStack.content}`
