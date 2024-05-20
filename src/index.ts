@@ -3,7 +3,7 @@ import type DiscordJSType from "discord.js";
 import DiscordJSAPI from "discord.js";
 import cron from "node-cron";
 import { BotProps, MetaConfig } from "./meta";
-import { Table, printTable } from "console-table-printer";
+import { Table } from "console-table-printer";
 
 const { Client, Events, GatewayIntentBits, Partials, PermissionFlagsBits, REST, Routes, SlashCommandBuilder } =
   DiscordJSAPI;
@@ -166,7 +166,7 @@ export class Bot extends MetaConfig {
         continue;
       }
 
-      cron.schedule(messageStack.cron, () => {
+      const cronAction = () => {
         (async () => {
           try {
             if (typeof messageStack.content === "string") {
@@ -192,7 +192,15 @@ export class Bot extends MetaConfig {
             );
           }
         })();
-      });
+      };
+
+      if (Array.isArray(messageStack.cron)) {
+        messageStack.cron.forEach((cronExpression) => {
+          cron.schedule(cronExpression, cronAction);
+        });
+      } else {
+        cron.schedule(messageStack.cron, cronAction);
+      }
     }
   }
 }

@@ -12,7 +12,7 @@ export type SlashCommand = {
 export type MessageStack = {
   channelID: string;
   content: string | (() => string) | (() => Promise<string>);
-  cron: string;
+  cron: string | string[];
 };
 
 export interface BotProps {
