@@ -17,6 +17,7 @@ export type MessageStack = {
 
 export interface BotProps {
   meta: {
+    logToFile?: boolean;
     appName: string;
     token: string;
     clientID: string;
@@ -29,7 +30,7 @@ export interface BotProps {
 export class MetaConfig extends Logger {
   private props: BotProps;
   constructor(props: BotProps) {
-    super(props.meta.appName);
+    super(props.meta.appName, props.meta.logToFile);
     this.props = props;
   }
   public get token() {

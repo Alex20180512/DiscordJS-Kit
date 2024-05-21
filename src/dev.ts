@@ -3,6 +3,7 @@ import { Bot } from ".";
 
 const bot = new Bot({
   meta: {
+    logToFile: false,
     appName: "discordjs-kit",
     token: process.env.TOKEN!,
     clientID: process.env.CLIENT_ID!,

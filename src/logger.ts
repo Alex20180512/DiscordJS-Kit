@@ -1,16 +1,25 @@
 import winston from "winston";
 
 export class Logger {
-  private createLogger(level: string, appName: string, filename: string): winston.Logger {
+  private createLogger(level: string, appName: string, filename?: string): winston.Logger {
+    const transports: winston.transport[] = [new winston.transports.Console()];
+    if (filename) {
+      transports.push(new winston.transports.File({ filename }));
+    }
+
     const timestampFormat = "YYYY-MM-DD HH:mm:ss:SSS";
     const loggerFormat = winston.format.printf(({ timestamp, level, message }) => {
-      return `[${appName}][${timestamp}][${level.toUpperCase()}] ${message}`;
+      if (filename) {
+        return `[${timestamp}][${appName}][${level.toUpperCase()}] ${message}`;
+      } else {
+        return `[${appName}][${level.toUpperCase()}] ${message}`;
+      }
     });
 
     return winston.createLogger({
       level: level,
       format: winston.format.combine(winston.format.timestamp({ format: timestampFormat }), loggerFormat),
-      transports: [new winston.transports.Console(), new winston.transports.File({ filename })],
+      transports: transports,
     });
   }
 
@@ -18,10 +27,10 @@ export class Logger {
   private warningLogger: winston.Logger;
   private errorLogger: winston.Logger;
 
-  constructor(appName: string) {
-    this.infoLogger = this.createLogger("info", appName, "./logs/info.log");
-    this.warningLogger = this.createLogger("warn", appName, "./logs/warning.log");
-    this.errorLogger = this.createLogger("error", appName, "./logs/error.log");
+  constructor(appName: string, logToFile: boolean = true) {
+    this.infoLogger = this.createLogger("info", appName, logToFile ? "./logs/info.log" : undefined);
+    this.warningLogger = this.createLogger("warn", appName, logToFile ? "./logs/warning.log" : undefined);
+    this.errorLogger = this.createLogger("error", appName, logToFile ? "./logs/error.log" : undefined);
   }
 
   public loggerInfo(msg: string) {
