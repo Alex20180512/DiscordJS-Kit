@@ -10,7 +10,7 @@ export type SlashCommand = {
 };
 
 export type MessageStack = {
-  channelID: string;
+  channelsID: string[];
   content: string | (() => string) | (() => Promise<string>);
   cron: string | string[];
 };

@@ -159,47 +159,47 @@ export class Bot extends MetaConfig {
     }
 
     for (const messageStack of this.messageStacks) {
-      const channel = this.client.channels.cache.get(messageStack.channelID) as DiscordJSType.TextChannel;
+      for (const channelID of messageStack.channelsID) {
+        const channel = this.client.channels.cache.get(channelID) as DiscordJSType.TextChannel;
 
-      if (!channel) {
-        this.loggerWarning(`Channel ID: ${messageStack.channelID} not found for ${messageStack.content}.`);
-        continue;
-      }
+        if (!channel) {
+          this.loggerWarning(`Channel ID: ${channelID} not found for ${messageStack.content}.`);
+          continue;
+        }
 
-      const cronAction = () => {
-        (async () => {
-          try {
-            if (typeof messageStack.content === "string") {
-              Boolean(messageStack.content) && (await channel.send(messageStack.content));
-            } else if (
-              typeof messageStack.content === "function" &&
-              messageStack.content.constructor.name === "AsyncFunction"
-            ) {
-              const content = await messageStack.content();
-              Boolean(content) && (await channel.send(content));
-            } else if (typeof messageStack.content === "function") {
-              const content = (messageStack.content as Function)();
-              Boolean(content) && (await channel.send(content));
-            } else {
-              this.loggerError(
-                `Invalid messageStack content type for channel ID: ${messageStack.channelID} for ${messageStack.content}`
-              );
+        const cronAction = () => {
+          (async () => {
+            try {
+              if (typeof messageStack.content === "string") {
+                Boolean(messageStack.content) && (await channel.send(messageStack.content));
+              } else if (
+                typeof messageStack.content === "function" &&
+                messageStack.content.constructor.name === "AsyncFunction"
+              ) {
+                const content = await messageStack.content();
+                Boolean(content) && (await channel.send(content));
+              } else if (typeof messageStack.content === "function") {
+                const content = (messageStack.content as Function)();
+                Boolean(content) && (await channel.send(content));
+              } else {
+                this.loggerError(
+                  `Invalid messageStack content type for channel ID: ${channelID} for ${messageStack.content}`
+                );
+              }
+            } catch (error) {
+              this.loggerError(error);
+              this.loggerError(`Failed to send message to channel ID: ${channelID} for ${messageStack.content}`);
             }
-          } catch (error) {
-            this.loggerError(error);
-            this.loggerError(
-              `Failed to send message to channel ID: ${messageStack.channelID} for ${messageStack.content}`
-            );
-          }
-        })();
-      };
+          })();
+        };
 
-      if (Array.isArray(messageStack.cron)) {
-        messageStack.cron.forEach((cronExpression) => {
-          cron.schedule(cronExpression, cronAction);
-        });
-      } else {
-        cron.schedule(messageStack.cron, cronAction);
+        if (Array.isArray(messageStack.cron)) {
+          messageStack.cron.forEach((cronExpression) => {
+            cron.schedule(cronExpression, cronAction);
+          });
+        } else {
+          cron.schedule(messageStack.cron, cronAction);
+        }
       }
     }
   }
