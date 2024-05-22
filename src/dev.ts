@@ -29,7 +29,7 @@ const bot = new Bot({
   ],
   messageStacks: [
     {
-      channelsID: [process.env.CHANNEL_ID!, "1240548017715544064"],
+      channelsID: [process.env.CHANNEL_ID!],
       content: () => "Hello, World! " + new Date().toLocaleTimeString(),
       cron: "*/10 * * * * *",
     },
