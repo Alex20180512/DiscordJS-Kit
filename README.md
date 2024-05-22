@@ -2,9 +2,13 @@
 
 A declarative Bot script development tool.
 
-## Warn
+## Latest version
 
-The bot's permission processing is not refined, and functions are provided under Admin permissions. Please use this tool with caution if you need subdivision permissions.
+[![npm](https://img.shields.io/npm/v/discord.js.svg)](https://www.npmjs.com/package/discord.js)
+
+## Supported versions
+
+[discord.js v14.15.2](https://www.npmjs.com/package/discord.js/v/14.15.2)
 
 ## Requirements
 
@@ -46,10 +50,10 @@ const bot = new Bot({
   ],
   messageStacks: [
     {
-      channelID: process.env.CHANNEL_ID!,
+      channelsID: [process.env.CHANNEL_ID!],
       // Return an empty string if you don't want to send anything
       content: "",
-      cron: "*/10 * * * * *",
+      cron: ["*/10 * * * * *", "*/20 * * * * *"],
     },
     {
       channelsID: [process.env.CHANNEL_ID!],
