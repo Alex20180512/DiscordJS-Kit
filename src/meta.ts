@@ -1,12 +1,34 @@
-import { CacheType, ChatInputCommandInteraction, ClientEvents } from "discord.js";
 import { Logger } from "./logger";
 import { BotProps } from "./type";
+import { DiscordJSType } from ".";
+import { Client, GatewayIntentBits, Partials, REST } from "discord.js";
 
-export class MetaConfig extends Logger {
-  private props: BotProps;
-  constructor(props: BotProps) {
+export class MetaConfig<L> extends Logger {
+  public client: DiscordJSType.Client;
+  public rest: DiscordJSType.REST;
+  private props: BotProps<L>;
+  constructor(props: BotProps<L>) {
     super(props.meta.appName, props.meta.logToFile);
     this.props = props;
+
+    this.rest = new REST().setToken(this.token);
+    this.client = new Client({
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildMessages,
+      ],
+      partials: [
+        Partials.User,
+        Partials.Channel,
+        Partials.GuildMember,
+        Partials.Message,
+        Partials.Reaction,
+        Partials.GuildScheduledEvent,
+        Partials.ThreadMember,
+      ],
+    });
   }
   public get token() {
     return this.props.meta.token;

@@ -11,7 +11,7 @@ const bot = new Bot({
   },
   on: [
     {
-      label: "1",
+      label: "45",
       name: "messageReactionAdd",
       action: (reaction, user) => {
         console.log(1);
@@ -20,9 +20,11 @@ const bot = new Bot({
     {
       label: "2",
       name: "messageReactionAdd",
-      action: (reaction, user) => {},
+      action: (reaction, user) => {
+        bot.event.listening;
+      },
     },
-  ],
+  ] as const,
 });
 
 bot.start();

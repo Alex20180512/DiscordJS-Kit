@@ -18,17 +18,17 @@ type AllowedEvents = "messageReactionAdd";
 
 type PickAllowedEvents = Pick<ClientEvents, AllowedEvents>;
 
-type EventHandler<T extends keyof PickAllowedEvents> = {
+type EventHandler<T extends keyof PickAllowedEvents, L> = {
   [P in T]: {
     isAdmin?: boolean;
     channelID?: string;
-    label: string;
+    label: L;
     name: P;
     action: (...args: PickAllowedEvents[P]) => void;
   };
 }[T];
 
-export interface BotProps {
+export interface BotProps<L> {
   meta: {
     logToFile?: boolean;
     appName: string;
@@ -38,11 +38,5 @@ export interface BotProps {
   };
   messageStacks?: MessageStack[];
   slashCommands?: SlashCommand[];
-  on?: EventHandler<AllowedEvents>[];
+  on?: EventHandler<AllowedEvents, L>[];
 }
-
-export type EventLabel<T extends BotProps> = T["on"] extends Array<infer U>
-  ? U extends { label: infer L }
-    ? L
-    : never
-  : never;

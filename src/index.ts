@@ -2,27 +2,16 @@ import "web-streams-polyfill/polyfill";
 import type DiscordJSType from "discord.js";
 import DiscordJSAPI from "discord.js";
 import cron from "node-cron";
-import { MetaConfig } from "./meta";
+import { Event } from "./event";
 import { Table } from "console-table-printer";
-import { BotProps, EventLabel } from "./type";
+import { BotProps } from "./type";
 
-const { Client, Events, GatewayIntentBits, Partials, PermissionFlagsBits, REST, Routes, SlashCommandBuilder } =
-  DiscordJSAPI;
+const { Events, PermissionFlagsBits, Routes, SlashCommandBuilder } = DiscordJSAPI;
 
-export class Bot<P extends BotProps> extends MetaConfig {
-  public client: DiscordJSType.Client;
-  public rest: DiscordJSType.REST;
-  constructor(props: P) {
+export class Bot<L> extends Event<L> {
+  constructor(props: BotProps<L>) {
     super(props);
-    this.rest = new REST().setToken(this.token);
-
-    this.client = new Client({
-      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions],
-      partials: [Partials.User, Partials.GuildMember, Partials.Reaction, Partials.Message],
-    });
-
     this.client.on(Events.Error, this.loggerError);
-
     this.client.on(Events.InteractionCreate, async (interaction) => {
       if (interaction.isCommand()) {
         const memberPermissions = interaction.member!.permissions as Readonly<DiscordJSType.PermissionsBitField>;
