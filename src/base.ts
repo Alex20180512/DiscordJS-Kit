@@ -3,21 +3,40 @@ import { BotProps } from "./type";
 import { DiscordJSType } from ".";
 import { Client, GatewayIntentBits, Partials, REST } from "discord.js";
 
-export class MetaConfig<L> extends Logger {
+export class Base<L> extends Logger {
   public client: DiscordJSType.Client;
   public rest: DiscordJSType.REST;
   private props: BotProps<L>;
   constructor(props: BotProps<L>) {
     super(props.meta.appName, props.meta.logToFile);
+
     this.props = props;
+    this.valid();
 
     this.rest = new REST().setToken(this.token);
     this.client = new Client({
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildModeration,
+        GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.GuildIntegrations,
+        GatewayIntentBits.GuildWebhooks,
+        GatewayIntentBits.GuildInvites,
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildPresences,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildMessageTyping,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.DirectMessageReactions,
+        GatewayIntentBits.DirectMessageTyping,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildScheduledEvents,
+        GatewayIntentBits.AutoModerationConfiguration,
+        GatewayIntentBits.AutoModerationExecution,
+        GatewayIntentBits.GuildMessagePolls,
+        GatewayIntentBits.DirectMessagePolls,
       ],
       partials: [
         Partials.User,
@@ -30,6 +49,7 @@ export class MetaConfig<L> extends Logger {
       ],
     });
   }
+  private valid() {}
   public get token() {
     return this.props.meta.token;
   }

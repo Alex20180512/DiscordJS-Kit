@@ -1,7 +1,7 @@
-import { MetaConfig } from "./meta";
+import { Base } from "./base";
 import { BotProps } from "./type";
 
-export class Event<L> extends MetaConfig<L> {
+export class Event<L> extends Base<L> {
   constructor(props: BotProps<L>) {
     super(props);
   }
