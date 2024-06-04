@@ -17,8 +17,8 @@ export class Bot extends MetaConfig {
     this.rest = new REST().setToken(this.token);
 
     this.client = new Client({
-      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
-      partials: [Partials.User, Partials.GuildMember],
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions],
+      partials: [Partials.User, Partials.GuildMember, Partials.Reaction, Partials.Message],
     });
 
     this.client.on(Events.Error, this.loggerError);
