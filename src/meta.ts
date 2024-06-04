@@ -1,31 +1,6 @@
-import { CacheType, ChatInputCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, ClientEvents } from "discord.js";
 import { Logger } from "./logger";
-
-export type SlashCommand = {
-  name: string;
-  description: string;
-  admin?: boolean;
-  args?: { filed: string; required?: boolean; type: "string" | "attachment"; description: string }[];
-  execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<void>;
-};
-
-export type MessageStack = {
-  channelsID: string[];
-  content: string | (() => string) | (() => Promise<string>);
-  cron: string | string[];
-};
-
-export interface BotProps {
-  meta: {
-    logToFile?: boolean;
-    appName: string;
-    token: string;
-    clientID: string;
-    guildsID: string[];
-  };
-  messageStacks?: MessageStack[];
-  slashCommands?: SlashCommand[];
-}
+import { BotProps } from "./type";
 
 export class MetaConfig extends Logger {
   private props: BotProps;
@@ -47,6 +22,9 @@ export class MetaConfig extends Logger {
   }
   public get messageStacks() {
     return this.props.messageStacks;
+  }
+  public get events() {
+    return this.props.on;
   }
   public getSlashCommandExecuteAction(name: string) {
     if (!this.slashCommands) {

@@ -9,18 +9,20 @@ const bot = new Bot({
     clientID: process.env.CLIENT_ID!,
     guildsID: [process.env.GUILD_ID!],
   },
+  on: [
+    {
+      name: "messageReactionAdd",
+      action: (reaction, user) => {
+        console.log(1);
+      },
+    },
+    {
+      name: "messageReactionAdd",
+      action: (reaction, user) => {
+        console.log(2);
+      },
+    },
+  ],
 });
 
-bot.start().then(() => {
-  bot.client.on("messageReactionAdd", async (reaction, user) => {
-    console.log(reaction);
-    console.log("======");
-    console.log(user);
-  });
-
-  bot.client.on("messageReactionRemove", async (reaction, user) => {
-    console.log(reaction);
-    console.log("======");
-    console.log(user);
-  });
-});
+bot.start();
