@@ -4,17 +4,16 @@ import DiscordJSAPI from "discord.js";
 import cron from "node-cron";
 import { MetaConfig } from "./meta";
 import { Table } from "console-table-printer";
-import { BotProps } from "./type";
+import { BotProps, EventLabel } from "./type";
 
 const { Client, Events, GatewayIntentBits, Partials, PermissionFlagsBits, REST, Routes, SlashCommandBuilder } =
   DiscordJSAPI;
 
-export class Bot extends MetaConfig {
+export class Bot<P extends BotProps> extends MetaConfig {
   public client: DiscordJSType.Client;
   public rest: DiscordJSType.REST;
-  constructor(props: BotProps) {
+  constructor(props: P) {
     super(props);
-
     this.rest = new REST().setToken(this.token);
 
     this.client = new Client({
@@ -71,7 +70,6 @@ export class Bot extends MetaConfig {
     this.client.once(Events.ClientReady, (readyClient) => {
       this.registerSlashCommands();
       this.registerMessageStacks();
-      this.registerEventHandlers();
       this.loggerInfo(`Ready! Logged in as ${readyClient.user.tag}`);
     });
   }
@@ -203,15 +201,6 @@ export class Bot extends MetaConfig {
           cron.schedule(messageStack.cron, cronAction);
         }
       }
-    }
-  }
-  private registerEventHandlers() {
-    if (!this.events) {
-      return;
-    }
-
-    for (const event of this.events) {
-      this.client.on(event.name, event.action);
     }
   }
 }

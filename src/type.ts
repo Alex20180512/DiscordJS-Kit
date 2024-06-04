@@ -22,6 +22,7 @@ type EventHandler<T extends keyof PickAllowedEvents> = {
   [P in T]: {
     isAdmin?: boolean;
     channelID?: string;
+    label: string;
     name: P;
     action: (...args: PickAllowedEvents[P]) => void;
   };
@@ -39,3 +40,9 @@ export interface BotProps {
   slashCommands?: SlashCommand[];
   on?: EventHandler<AllowedEvents>[];
 }
+
+export type EventLabel<T extends BotProps> = T["on"] extends Array<infer U>
+  ? U extends { label: infer L }
+    ? L
+    : never
+  : never;

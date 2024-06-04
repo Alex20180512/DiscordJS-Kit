@@ -11,16 +11,16 @@ const bot = new Bot({
   },
   on: [
     {
+      label: "1",
       name: "messageReactionAdd",
       action: (reaction, user) => {
         console.log(1);
       },
     },
     {
+      label: "2",
       name: "messageReactionAdd",
-      action: (reaction, user) => {
-        console.log(2);
-      },
+      action: (reaction, user) => {},
     },
   ],
 });
