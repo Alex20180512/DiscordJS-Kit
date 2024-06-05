@@ -49,7 +49,17 @@ export class Base<L> extends Logger {
       ],
     });
   }
-  private valid() {}
+  private valid() {
+    if (this.events) {
+      const eventLabel = new Set();
+      for (const event of this.events) {
+        if (eventLabel.has(event.label)) {
+          throw new Error(`Event label ${event.label} already exists`);
+        }
+        eventLabel.add(event.label);
+      }
+    }
+  }
   public get token() {
     return this.props.meta.token;
   }
@@ -67,6 +77,18 @@ export class Base<L> extends Logger {
   }
   public get events() {
     return this.props.on;
+  }
+  public getEventAction(name: unknown) {
+    if (!this.events) {
+      return null;
+    }
+
+    const event = this.events.find((event) => event.label === name);
+    if (event) {
+      return event;
+    }
+
+    return null;
   }
   public getSlashCommandExecuteAction(name: string) {
     if (!this.slashCommands) {

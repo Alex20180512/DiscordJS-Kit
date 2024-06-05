@@ -14,14 +14,14 @@ export type MessageStack = {
   cron: string | string[];
 };
 
-type AllowedEvents = "messageReactionAdd";
+type AllowedEvents = "messageReactionAdd" | "messageReactionRemove";
 
 type PickAllowedEvents = Pick<ClientEvents, AllowedEvents>;
 
 type EventHandler<T extends keyof PickAllowedEvents, L> = {
   [P in T]: {
     isAdmin?: boolean;
-    channelID?: string;
+    channelsID?: string[];
     label: L;
     name: P;
     action: (...args: PickAllowedEvents[P]) => void;

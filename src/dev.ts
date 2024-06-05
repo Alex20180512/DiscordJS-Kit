@@ -9,19 +9,41 @@ const bot = new Bot({
     clientID: process.env.CLIENT_ID!,
     guildsID: [process.env.GUILD_ID!],
   },
+  slashCommands: [
+    {
+      name: "start-watch",
+      description: "Start watching the channel",
+      async execute(interaction) {
+        bot.event.listening("1");
+        bot.event.listening("2");
+        await interaction.reply("Pong!");
+      },
+    },
+    {
+      name: "stop-watch",
+      description: "Stop watching the channel",
+      async execute(interaction) {
+        bot.event.removeListening("1");
+        bot.event.removeListening("2");
+        await interaction.reply("Pong!");
+      },
+    },
+  ],
   on: [
     {
-      label: "45",
+      label: "1",
       name: "messageReactionAdd",
+      isAdmin: true,
       action: (reaction, user) => {
-        console.log(1);
+        console.log(reaction.emoji.name);
       },
     },
     {
       label: "2",
-      name: "messageReactionAdd",
+      name: "messageReactionRemove",
+      isAdmin: true,
       action: (reaction, user) => {
-        bot.event.listening;
+        console.log(reaction.emoji.name);
       },
     },
   ] as const,

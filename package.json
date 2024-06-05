@@ -1,7 +1,7 @@
 {
   "name": "discordjs-kit",
   "type": "module",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "A declarative Bot script development tool.",
   "keywords": [],
   "sideEffects": false,
