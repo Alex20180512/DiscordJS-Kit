@@ -20,8 +20,8 @@ type PickAllowedEvents = Pick<ClientEvents, AllowedEvents>;
 
 type EventHandler<T extends keyof PickAllowedEvents, L> = {
   [P in T]: {
-    isAdmin?: boolean;
     channelsID?: string[];
+    roles?: string[];
     label: L;
     name: P;
     action: (...args: PickAllowedEvents[P]) => void;

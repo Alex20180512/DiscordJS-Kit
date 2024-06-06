@@ -1,4 +1,4 @@
-import { ClientEvents, PermissionFlagsBits, PermissionsBitField } from "discord.js";
+import { ClientEvents, PermissionFlagsBits, PermissionsBitField, User } from "discord.js";
 import { Base } from "./base";
 import { BotProps } from "./type";
 
@@ -14,7 +14,7 @@ export class Event<L> extends Base<L> {
         if (!event) return;
         if (this.listeners.has(label)) return;
 
-        const action = (...args: Parameters<typeof event.action>) => {
+        const action = async (...args: Parameters<typeof event.action>) => {
           if (event.name === "messageReactionAdd" || event.name === "messageReactionRemove") {
             const [reaction, user] = args;
             if (user.bot) return;
@@ -24,13 +24,12 @@ export class Event<L> extends Base<L> {
               if (!event.channelsID.includes(reaction.message.channelId)) return;
             }
 
-            if (event.isAdmin) {
-              const member = reaction.message.guild.members.cache.get(user.id);
-              if (!member) return;
-              const memberPermissions = member.permissions as Readonly<PermissionsBitField>;
-              const isAdmin = memberPermissions.has(PermissionFlagsBits.Administrator);
-
-              if (!isAdmin) return;
+            if (event.roles && event.roles.length > 0) {
+              const member = await reaction.message.guild.members.fetch({ user: user as User });
+              if (member) {
+                const roles = member.roles.cache;
+                if (!event.roles.some((role) => roles.has(role))) return;
+              }
             }
           }
 
