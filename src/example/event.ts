@@ -29,7 +29,7 @@ const bot = new Bot({
     {
       label: "1",
       name: "messageReactionAdd",
-      roles: ["1248115464589279314"],
+      roles: ["1237947006802985051"],
       action: (reaction, user) => {
         console.log(reaction.emoji.name);
       },
